@@ -1,0 +1,120 @@
+ mysql -u root   		//login
+ show databases;
+ use information_schema
+ show tables;
+describe EVENTS;
+
+
+/*creating a database named University*/
+
+/*open shell*/
+
+mysql -u root
+CREATE DATABASE University;
+SHOW DATABASES;
+
+/*LETS ACTIVATE THE DATABASE*/
+
+
+USE University;
+
+
+/*
+11 digit er number INT er vitore raka jai
+COLUMN_NAME TYPE,
+ varchar -> string bujai
+*/
+
+
+CREATE TABLE student (
+	student_id INT,
+	name VARCHAR(20), 
+	dept VARCHAR(10),
+	semester VARCHAR(10)
+);
+
+show tables;
+
+/*select table to see inside*/
+
+describe student;
+
+
+/*creatign another table*/
+
+create table course(
+	course_code VARCHAR(7) PRIMARY KEY, /*PRIMARY KEY -> AKTA COLUMN JA EVERY COLUMN KE UNIQULY IDENTIFY KOR BE*/
+	coruse_name VARCHAR(30) NOT NULL /*value taktei hobe ta sara oi row exicuted hobe na*/,
+	credit INT
+);
+
+
+/*add new column*/
+ALTER TABLE student ADD email VARCHAR(30);
+
+/*modify existing column*/
+Alter table student Modify name VARCHAR(40); /* upper case lowercase no problemmo !*/
+
+
+/*change the table structure*/
+/*drop existing column -> oi column delete hoya jabe*/
+alter table student drop semester; 
+
+/*renaming a column*/
+ALTER TABLE student CHANGE dept department VARCHAR(10); /*alter table tableName change jeiColumnChanegKorbo NewColumnName inputType(number);*/
+
+
+/*change the table name*/
+RENAME TABLE course to course_info;
+
+
+/*adding info to the table or DB*/
+INSERT INTO student values
+(1, 'Sabbir', 'THM', '1vau@diu.edu.bd'),
+(2, 'Arman', 'CSE', '2vau@diu.edu.bd'),
+(3, 'Rahul', 'PHY', '3vau@diu.edu.bd'),
+(4, 'Saief', 'BBA', '4vau@diu.edu.bd'),
+(5, 'Hasib', 'BBA', '5vau@diu.edu.bd');
+
+INSERT INTO teacher (id, name, email)
+VALUES
+
+
+INSERT INTO teacher VALUES
+('Rasel Sorkar', 'raselsei@yahoo.com'),
+('Golam Robbani', 'golamvai@yahoo.com'),
+('Roni Islam', 'ronytukhor@yahoo.com'),
+('Sabur Khan', 'saburbro@yahoo.com');
+
+
+insert into teacher values
+('Arman Hossen', 'kisuiparina@gmail.com);
+
+
+
+/*to see table data*/
+select * from student;
+
+/*kono command e ; miss gele ; dibo porer line e tale command execute hobe*/
+/*input e kono vul hole, or command e example ' miss gese tahole '; dibo tale oi command execute hobe*/
+
+
+/*data delet kor te caile*/
+TRUNCATE TABLE course; //
+drop table amni; /*deletes that table*/ 
+drop database university; /*deletes database*/
+
+
+
+
+
+/*
+exercise set A
+create db name company_db;
+*/
+show databases;
+create Database company_db;
+use comapany_db;
+
+
+
