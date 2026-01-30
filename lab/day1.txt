@@ -105,6 +105,14 @@ drop table amni; /*deletes that table*/
 drop database university; /*deletes database*/
 
 
+Pro tips (worth knowing)
+DROP DATABASE is irreversible
+Make a quick backup if it’s important:
+mysqldump -u root db_name > backup.sql
+
+If the database name has special characters
+Wrap it with backticks:
+DROP DATABASE `my-db`;
 
 
 
