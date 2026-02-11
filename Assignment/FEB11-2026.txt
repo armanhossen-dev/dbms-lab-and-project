@@ -1,0 +1,320 @@
+task:
+https://docs.google.com/document/d/1_-QwzYMOZjy8F96QbSxzqRG-m5vRBn68yVfRP8w966k/edit?tab=t.0
+
+Questions
+
+1. Write an SQL query to display the student_id, subject, and marks of students who scored more than 80 marks in any subject, ordered by marks in descending order.
+2. Write an SQL query to display the student_id, student_name, and year of students who belong to the Computer department using the IN clause, ordered by year and student name.
+3. Write an SQL query to find the student_id, student_name, and department of students who are not from the Mechanical or Electrical departments using the NOT IN clause.
+4. Write an SQL query to display the distinct subjects whose names start with the letter ‘C’ using the LIKE operator.
+5. Write an SQL query to display the student_id and total marks for each student, but include only those students whose total marks are greater than 150, using GROUP BY and HAVING.
+6. Write an SQL query to find the student_id and number of subjects for students who have marks in more than two subjects, using GROUP BY and HAVING.
+7. Write an SQL query to display the student_id and total marks of students whose total marks are greater than the average total marks of all students, using a subquery.
+8. Write an SQL query to find the student_id and average marks of students whose average marks are greater than the overall average marks of all students, using a subquery.
+9. Write an SQL query to display the department name and number of students in each department, but include only those departments that have at least three students who have marks recorded, without using JOIN.
+10. Write an SQL query to find the student_id of students who have never scored below 60 marks in any subject, using NOT IN and a subquery.
+
+
+CREATE DATABASE STU;
+SHOW DATABASES;
+
+USE STU;
+
+CREATE Table Students(
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(30) NOT NULL,
+    department VARCHAR(20) NOT NULL,
+    year INT NOT NULL
+);
+
+show tables;
+
+INSERT INTO Students values
+    (101, 'Amit', 'Computer', 2),
+    (102, 'Neha', 'Computer', 3),
+    (103, 'Rahul','Mechanical', 2),
+    (104, 'Sneha', 'Electrical', 1),
+    (105, 'Karan', 'Computer', 4),
+    (106, 'Pooja', 'Mechanical', 3),
+    (107, 'Arjun', 'Electrical', 2),
+    (108, 'Riya', 'Computer', 1);
+
+Create Table Marks(
+    mark_id INT PRIMARY KEY,
+    student_id INT NOT NULL,
+    subject VARCHAR(20) NOT NULL,
+    marks INT NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id)
+);
+
+INSERT INTO Marks( mark_id, student_id, subject, marks) VALUES 
+(1, 101, 'DBMS', 78),
+(2, 101, '0S', 65),
+(3, 101, 'CN', 72),
+(4, 102, 'DBMS', 88),
+(5, 102, '0S', 91),
+(6, 103, 'Mechanics', 60),
+(7, 103, 'Thermodynamics', 55),
+(8, 104, 'Circuits', 82),
+(9, 104, 'Physics', 76),
+(10, 105, 'DBMS', 95),
+(11, 105, 'AI', 89),
+(12, 106, 'Mechanics', 70),
+(13, 106, 'Manufacturing', 68),
+(14, 107, 'Circuits', 45),
+(15, 107, 'Power Systems', 52),
+(16, 108, 'DBMS', 66),
+(17, 108, 'OS', 61);
+
+1.Write an SQL query to display the student_id, subject, and marks of students 
+who scored more than 80 marks in any subject, ordered by marks in descending order.
+
+/*
+SELECT → chooses columns to display
+FROM Marks → table name
+WHERE marks > 80 → filters students scoring above 80
+ORDER BY marks DESC → highest marks shown first
+*/
+
+SELECT student_id, subject, marks FROM Marks WHERE marks > 80 ORDER BY marks DESC;
+
+MariaDB [STU]> SELECT student_id, subject, marks FROM Marks WHERE marks > 80 ORDER BY marks DESC;
++------------+----------+-------+
+| student_id | subject  | marks |
++------------+----------+-------+
+|        105 | DBMS     |    95 |
+|        102 | 0S       |    91 |
+|        105 | AI       |    89 |
+|        102 | DBMS     |    88 |
+|        104 | Circuits |    82 |
++------------+----------+-------+
+
+
+2. Write an SQL query to display the student_id, student_name, and year of 
+students who belong to the Computer department using the IN clause, ordered 
+by year and student name.
+
+
+SELECT student_id, student_name, year FROM Students WHERE department IN('Computer') ORDER BY year, student_name;
++------------+--------------+------+
+| student_id | student_name | year |
++------------+--------------+------+
+|        108 | Riya         |    1 |
+|        101 | Amit         |    2 |
+|        102 | Neha         |    3 |
+|        105 | Karan        |    4 |
++------------+--------------+------+
+
+
+3. Write an SQL query to find the student_id, student_name, and department of 
+students who are not from the Mechanical or Electrical departments using the 
+NOT IN clause.
+
+
+SELECT student_id, student_name, department FROM Students where department NOT IN('Mechanical', 'Electrical');
++------------+--------------+------------+
+| student_id | student_name | department |
++------------+--------------+------------+
+|        101 | Amit         | Computer   |
+|        102 | Neha         | Computer   |
+|        105 | Karan        | Computer   |
+|        108 | Riya         | Computer   |
++------------+--------------+------------+
+
+
+4. Write an SQL query to display the distinct subjects whose names start with the letter ‘C’ using the LIKE operator.
+
+SELECT DISTINCT subject FROM Marks WHERE subject LIKE 'c%';
+
++----------+
+| subject  |
++----------+
+| CN       |
+| Circuits |
++----------+
+
+
+5. Write an SQL query to display the student_id and total marks for each student, but include only 
+those students whose total marks are greater than 150, using GROUP BY and HAVING.
+
+SELECT student_id, SUM(marks) AS total_marks from Marks Group By student_id Having SUM(marks) > 150;
+
+or,
+
+SELECT student_id, SUM(marks) AS total_marks
+FROM Marks
+GROUP BY student_id
+HAVING SUM(marks) > 150;
+
++------------+-------------+
+| student_id | total_marks |
++------------+-------------+
+|        101 |         215 |
+|        102 |         179 |
+|        104 |         158 |
+|        105 |         184 |
++------------+-------------+
+
+
+6. Write an SQL query to find the student_id and number of subjects for students who have marks in more 
+than two subjects, using GROUP BY and HAVING.
+
+select student_id, COUNT(subject) As num_of_sub from Marks group by student_id having COUNT(subject) > 2;
+
++------------+------------+
+| student_id | num_of_sub |
++------------+------------+
+|        101 |          3 |
++------------+------------+
+
+
+7. Write an SQL query to display the student_id and total marks of students whose total marks are greater 
+than the average total marks of all students, using a subquery.
+
+SELECT student_id, SUM(marks) AS total_marks
+FROM Marks
+GROUP BY student_id
+HAVING SUM(marks) > (
+    SELECT AVG(total_marks)
+    FROM (
+        SELECT SUM(marks) AS total_marks
+        FROM Marks
+        GROUP BY student_id
+    ) AS temp
+);
+
++------------+-------------+
+| student_id | total_marks |
++------------+-------------+
+|        101 |         215 |
+|        102 |         179 |
+|        104 |         158 |
+|        105 |         184 |
++------------+-------------+
+
+8. Write an SQL query to find the student_id and average marks of students whose average marks are greater 
+than the overall average marks of all students, using a subquery.
+
+SELECT student_id, AVG(marks) AS avg_mark
+FROM Marks
+GROUP BY student_id
+HAVING AVG(marks) > (SELECT AVG(marks) FROM Marks);
+
++------------+----------+
+| student_id | avg_mark |
++------------+----------+
+|        101 |  71.6667 |
+|        102 |  89.5000 |
+|        104 |  79.0000 |
+|        105 |  92.0000 |
++------------+----------+
+
+
+9. Write an SQL query to display the department name and number of students in each department, 
+but include only those departments that have at least three students who have marks recorded, 
+without using JOIN.
+
+
+SELECT department, COUNT(*) AS num_of_student_per_dept
+FROM Students
+WHERE student_id IN(SELECT DISTINCT student_id FROM Marks)
+GROUP BY department
+HAVING COUNT(*) >= 3;
+
+
++------------+-------------------------+
+| department | num_of_student_per_dept |
++------------+-------------------------+
+| Computer   |                       4 |
++------------+-------------------------+
+
+
+
+/* students in each dept */
+
+select department,  count(*) as num_of_stu_in_dept
+from Students
+where student_id IN(
+    select distinct student_id
+    from Marks)
+    group by department;
+
++------------+--------------------+
+| department | num_of_stu_in_dept |
++------------+--------------------+
+| Computer   |                  4 |
+| Electrical |                  2 |
+| Mechanical |                  2 |
++------------+--------------------+
+
+
+10. Write an SQL query to find the student_id of students who have never scored below 60 marks in any subject, 
+using NOT IN and a subquery.
+
+select distinct student_id from Marks 
+where student_id NOT IN(
+    select student_id 
+    From Marks
+    where marks < 60);
+
++------------+
+| student_id |
++------------+
+|        101 |
+|        102 |
+|        104 |
+|        105 |
+|        106 |
+|        108 |
++------------+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+select * from Marks;
++---------+------------+----------------+-------+
+| mark_id | student_id | subject        | marks |
++---------+------------+----------------+-------+
+|       1 |        101 | DBMS           |    78 |
+|       2 |        101 | 0S             |    65 |
+|       3 |        101 | CN             |    72 |
+|       4 |        102 | DBMS           |    88 |
+|       5 |        102 | 0S             |    91 |
+|       6 |        103 | Mechanics      |    60 |
+|       7 |        103 | Thermodynamics |    55 |
+|       8 |        104 | Circuits       |    82 |
+|       9 |        104 | Physics        |    76 |
+|      10 |        105 | DBMS           |    95 |
+|      11 |        105 | AI             |    89 |
+|      12 |        106 | Mechanics      |    70 |
+|      13 |        106 | Manufacturing  |    68 |
+|      14 |        107 | Circuits       |    45 |
+|      15 |        107 | Power Systems  |    52 |
+|      16 |        108 | DBMS           |    66 |
+|      17 |        108 | OS             |    61 |
++---------+------------+----------------+-------+
+
+select * from Students;
++------------+--------------+------------+------+
+| student_id | student_name | department | year |
++------------+--------------+------------+------+
+|        101 | Amit         | Computer   |    2 |
+|        102 | Neha         | Computer   |    3 |
+|        103 | Rahul        | Mechanical |    2 |
+|        104 | Sneha        | Electrical |    1 |
+|        105 | Karan        | Computer   |    4 |
+|        106 | Pooja        | Mechanical |    3 |
+|        107 | Arjun        | Electrical |    2 |
+|        108 | Riya         | Computer   |    1 |
++------------+--------------+------------+------+
+
+show tables;
++---------------+
+| Tables_in_STU |
++---------------+
+| Marks         |
+| Students      |
++---------------+
+
+drop database STU;
+show databases;
+exit;
