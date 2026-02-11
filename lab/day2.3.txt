@@ -1,0 +1,99 @@
+/*
+create = INSERT
+read, describe = SELECT
+update,alter = update
+delete,drop = delete
+*/
+
+/*
+today we will learn: "WHERE"
+
+select id, name, ctg from product;
+
+SELECT * from product where 
+price > 50;
+
+select * from product where category = 'stationary';
+
+select * from product where price >= 50 and price <= 100;
+
+select * from product where price between 50 and 100;
+
+
+select * from product where name like 'm%%'; // suru hobe m dia then 0 or more char takbe
+select * from product where name like '%%m%%'; // name er vitore m takbe emon
+select id, name, ctg, MAX(price) from product; // show kor be id, name, ctg, jar max(price) in prduct er vitore
+
+2️⃣ Get the most expensive product (full row)
+SELECT id, name, ctg, price
+FROM product
+WHERE price = (SELECT MAX(price) FROM product);
+
+
+3️⃣ Get the max price per category
+SELECT ctg, MAX(price) AS max_price
+FROM product
+GROUP BY ctg;
+
+4️⃣ Get the most expensive product in each category
+SELECT p.id, p.name, p.ctg, p.price
+FROM product p
+JOIN (
+    SELECT ctg, MAX(price) AS max_price
+    FROM product
+    GROUP BY ctg
+) m
+ON p.ctg = m.ctg AND p.price = m.max_price;
+
+
+product , price bade sob uppercase e  lekesen sir 
+
+*/
+
+mysql -u root
+
+create database demo;
+
+use demo;
+
+create table product (
+    id INT PRIMARY KEY,
+    name VARCHAR(30),
+    category VARCHAR(30),
+    price FLOAT(10,3)  //number of digits, number of decimals
+);
+
+INSERT INTO product values
+(1, 'marker', 'stationary', 30.0),
+(2, 'notebook1', 'stationary', 50.0),
+(3, 'notebook2', 'stationary', 50.0),
+(4, 'notebook3', 'stationary', 50.0),
+(5, 'notebook4', 'stationary', 50.0),
+(6, 'apple', 'fruit', 10.0),
+(7, 'fish', 'Culinary', 150.0),
+(8, 'mutton', 'Culinary', 250.0);
+
+SELECT * FROM product;
+
+
+/*
+Aggregate Functions - used in select, and applied for collumn
+SUM
+AVG
+MIN
+MAX
+COUNT
+*/
+
+
+UPDATE product set price = 20 where id = 3;
+update product set price = 60 where name = 'apple';
+update product  set price = price * 1.1;  // 10% price increased
+update product  set price = price * .95;  // 5% price decreased
+
+
+DELETE FROM product where ctg = 'fruit';
+
+
+
+
