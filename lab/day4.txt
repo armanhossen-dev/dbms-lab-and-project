@@ -1,0 +1,67 @@
+
+CREATE DATABASE demo;
+USE demo;
+
+CREATE TABLE Persons(
+    ID int,
+    lastName VARCHAR(20) NOT NULL,
+    FirstName VARCHAR(20),
+    age int );
+
+describe Persons;
+ALTER TABLE Persons ADD PRIMARY KEY(ID);
+
+<!--- using constraint  
+https://www.w3schools.com/sql/sql_constraints.asp
+--->
+
+RENAME TABLE old_table_name TO new_table_name;
+
+
+INSERT INTO Persons VALUES
+(1, 'X', 'ARMAN', 23);
+
+
+/* to add new column in a table 
+
+ALTER TABLE Students
+ADD email VARCHAR(100);
+*/
+
+ALTER TABLE Persons DROP PRIMARY KEY;
+ALTER TABLE Persons ADD PRIMARY KEY(ID);
+
+/* Foreign Key
+   Primary key of a different table
+ */
+
+ CREATE TABLE Orders(
+    order_id int NOT NULL,
+    order_num int NOT NULL,
+    person_id int,
+    PRIMARY KEY(order_id),
+    FOREIGN KEY(person_id) REFERENCES Persons(ID));
+
+
+describe Orders;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| order_id  | int(11) | NO   | PRI | NULL    |       |
+| order_num | int(11) | NO   |     | NULL    |       |
+| person_id | int(11) | YES  | MUL | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+
+
+describe Persons;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| ID        | int(11)     | NO   | PRI | NULL    |       |
+| lastName  | varchar(20) | NO   |     | NULL    |       |
+| FirstName | varchar(20) | YES  |     | NULL    |       |
+| age       | int(11)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+
+
+ ALTER TABLE Orders ADD    CONSTRAINT fk_persons_order FOREIGN KEY(person_id) REFERENCES Persons(ID);

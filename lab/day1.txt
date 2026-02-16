@@ -22,7 +22,7 @@ USE University;
 /*
 11 digit er number INT er vitore raka jai
 COLUMN_NAME TYPE,
- varchar -> string bujai
+varchar -> string bujai
 */
 
 
