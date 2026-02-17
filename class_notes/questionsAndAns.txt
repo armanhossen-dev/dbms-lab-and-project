@@ -4,6 +4,15 @@
 4.show customers from Dhaka or Khulna
 5.show total quantity ordered for each product
 6.show average price of all products
+7.show the name of most expensive product_name
+8.show customers who placed at least one order
+8.5.show customers who placed no order
+9. show product id and total_quantity sold only for products where total quantity is greater than 2
+10.show the sold products name which has maximum total quantity of order
+11.show the products which product sales maximum times (not the highest order, just which product purchase by maximum customers)
+12. show each customers bill (total cost and product names)
+
+
 
 
 Ans:
@@ -121,3 +130,147 @@ select * from orders;
     | Laptop | 80000 |
     | Phone  | 40000 |
     +--------+-------+
+
+
+7. select the name of most expensive product_name
+
+    select p_name from products where price = (select max(price) from products);
+    +--------+
+    | p_name |
+    +--------+
+    | Laptop |
+    +--------+
+
+    select p_name, price from products where price = (select max(price) from products);
+    +--------+-------+
+    | p_name | price |
+    +--------+-------+
+    | Laptop | 80000 |
+    +--------+-------+
+
+
+8.show customers who placed at least one order
+
+    select * from customers where c_id IN(select distinct c_id from orders);
+    
+    +------+--------+------------+
+    | c_id | c_name | city       |
+    +------+--------+------------+
+    |    1 | Rahim  | Dhaka      |
+    |    2 | Karina | Chittagong |
+    |    3 | Imran  | Dhaka      |
+    |    4 | Tania  | Khulna     |
+    +------+--------+------------+
+
+8.5.show customers who placed no order
+    select * from customers where c_id NOT IN (select distinct c_id from orders);
+    +------+--------+----------+
+    | c_id | c_name | city     |
+    +------+--------+----------+
+    |    5 | Fahim  | Rajshahi |
+    +------+--------+----------+
+
+
+select * from orders;
++------+------+------+----------+
+| o_id | c_id | p_id | quantity |
++------+------+------+----------+
+|    1 |    1 |  101 |        1 |
+|    2 |    2 |  102 |        2 |
+|    3 |    1 |  103 |        3 |
+|    4 |    3 |  104 |        1 |
+|    5 |    4 |  105 |        2 |
+|    6 |    1 |  102 |        2 |
++------+------+------+----------+
+
+ select * from customers;
++------+--------+------------+
+| c_id | c_name | city       |
++------+--------+------------+
+|    1 | Rahim  | Dhaka      |
+|    2 | Karina | Chittagong |
+|    3 | Imran  | Dhaka      |
+|    4 | Tania  | Khulna     |
+|    5 | Fahim  | Rajshahi   |
++------+--------+------------+
+
+
+9. show product id and total_quantity sold only for products where total quantity is greater than 2
+
+    select p_id, sum(quantity) as total_quantity from orders 
+    group by p_id 
+    having sum(quantity) > 2;
+
+    +------+----------------+
+    | p_id | total_quantity |
+    +------+----------------+
+    |  102 |              4 |
+    |  103 |              3 |
+    +------+----------------+
+
+10.show the sold products name which has maximum total quantity of order
+
+    select * 
+    from  products 
+    where p_id = (
+        select p_id
+        from orders
+        group by p_id
+        order by sum(quantity) DESC
+        limit 1);
+
+        +------+--------+-------+
+        | p_id | p_name | price |
+        +------+--------+-------+
+        |  102 | Phone  | 40000 |
+        +------+--------+-------+
+
+
+11.show the products which product sales maximum times (not the highest order, just which product purchase by maximum customers)
+
+    select * from products where p_id = ( select p_id from orders
+    group by p_id  order by count(p_id)  desc limit 1);
+
+    +------+--------+-------+
+    | p_id | p_name | price |
+    +------+--------+-------+
+    |  102 | Phone  | 40000 |
+    +------+--------+-------+
+
+
+Extra: show with the quantity 
+
+    select p.*, sum(o.quantity)  as total_sold
+    from products p
+    join orders   o
+    on p.p_id = o.p_id
+    GROUP BY p.p_id
+    ORDER BY total_sold desc limit 1;
+
+    +------+--------+-------+------------+
+    | p_id | p_name | price | total_sold |
+    +------+--------+-------+------------+
+    |  102 | Phone  | 40000 |          4 |
+    +------+--------+-------+------------+
+
+
+12. show each customers bill (total cost and product names)
+
+    SELECT 
+    c.c_id, 
+    c.c_name,
+    GROUP_CONCAT(CONCAT(p.p_name, ' x', o.quantity) SEPARATOR ', ') AS products_bought,
+    SUM(o.quantity * p.price) AS total_bill
+    FROM customers c
+    JOIN orders o ON c.c_id = o.c_id
+    JOIN products p ON o.p_id = p.p_id
+    GROUP BY c.c_id, c.c_name;
+    
+    +------+--------+-----------------------------------+------------+
+    | c_id | c_name | products_bought                   | total_bill |
+    +------+--------+-----------------------------------+------------+
+    |    1 | Rahim  | Laptop x1, Headphone x3, Phone x2 |     175000 |
+    |    2 | Karina | Phone x2                          |      80000 |
+    |    3 | Imran  | Table x1                          |      30000 |
+    |    4 | Tania  | Monitor x2                        |      40000 |
+    +------+--------+-----------------------------------+------------+
