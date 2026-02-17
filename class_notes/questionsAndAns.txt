@@ -1,0 +1,123 @@
+1.show all customers from Dhaka
+2.show products costing more than 30000
+3.show products price between 20000 and 50000
+4.show customers from Dhaka or Khulna
+5.show total quantity ordered for each product
+6.show average price of all products
+
+
+Ans:
+1.show all customers from Dhaka
+
+    Select * from customers where city = 'Dhaka';
+
+    +------+--------+-------+
+    | c_id | c_name | city  |
+    +------+--------+-------+
+    |    1 | Rahim  | Dhaka |
+    |    3 | Imran  | Dhaka |
+    +------+--------+-------+
+
+2.show products costing more than 30000
+
+    select * from products where price > 30000;
+
+    +------+--------+-------+
+    | p_id | p_name | price |
+    +------+--------+-------+
+    |  101 | Laptop | 80000 |
+    |  102 | Phone  | 40000 |
+    +------+--------+-------+
+
+
+3.show products price between 20000 and 50000
+[NOTE: between includes the limits 20k and 50k also]
+
+    select * from products where price between 20000 and 50000;
+
+    +------+---------+-------+
+    | p_id | p_name  | price |
+    +------+---------+-------+
+    |  102 | Phone   | 40000 |
+    |  104 | Table   | 30000 |
+    |  105 | Monitor | 20000 |
+    +------+---------+-------+
+
+4.show customers from Dhaka or Khulna
+
+    select * from customers where city = 'Dhaka' or city = 'Khulna';
+    +------+--------+--------+
+    | c_id | c_name | city   |
+    +------+--------+--------+
+    |    1 | Rahim  | Dhaka  |
+    |    3 | Imran  | Dhaka  |
+    |    4 | Tania  | Khulna |
+    +------+--------+--------+
+
+    or
+
+    select * from customers where city in('Dhaka', 'Khulna');
+    +------+--------+--------+
+    | c_id | c_name | city   |
+    +------+--------+--------+
+    |    1 | Rahim  | Dhaka  |
+    |    3 | Imran  | Dhaka  |
+    |    4 | Tania  | Khulna |
+    +------+--------+--------+
+
+
+5.show total quantity ordered for each product
+IDEA: [p_id, total_quantity] find from order table 
+
+    select p_id, sum(quantity) as Total_Quantity from orders 
+    group by p_id;
+    +------+----------------+
+    | p_id | Total_Quantity |
+    +------+----------------+
+    |  101 |              1 |
+    |  102 |              4 |
+    |  103 |              3 |
+    |  104 |              1 |
+    |  105 |              2 |
+    +------+----------------+
+
+remembering the table!
+select * from orders;
++------+------+------+----------+
+| o_id | c_id | p_id | quantity |
++------+------+------+----------+
+|    1 |    1 |  101 |        1 |
+|    2 |    2 |  102 |        2 |
+|    3 |    1 |  103 |        3 |
+|    4 |    3 |  104 |        1 |
+|    5 |    4 |  105 |        2 |
+|    6 |    1 |  102 |        2 |
++------+------+------+----------+
+
+
+6.show average price of all products
+
+    select avg(price) from products;
+    +------------+
+    | avg(price) |
+    +------------+
+    | 35000.0000 |
+    +------------+
+
+    select p_name from products
+    where price > (select avg(price) from products);
+    +--------+
+    | p_name |
+    +--------+
+    | Laptop |
+    | Phone  |
+    +--------+
+
+    select p_name, price from products
+    where price > (select avg(price) from products);
+    +--------+-------+
+    | p_name | price |
+    +--------+-------+
+    | Laptop | 80000 |
+    | Phone  | 40000 |
+    +--------+-------+
