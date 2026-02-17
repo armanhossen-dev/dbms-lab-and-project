@@ -1,0 +1,140 @@
+oss = online shopping system | creating DB and data input, next txt file will have the questions and ans !
+
+
+show databases;
+create database oss;
+
+use oss;
+
+create table Customers(
+    c_id INT PRIMARY KEY,
+    c_name VARCHAR(30),
+    city VARCHAR(15)
+);
+
+INSERT INTO Customers Values 
+(1, 'Rahim', 'Dhaka'),
+(2, 'Karina', 'Chittagong'),
+(3, 'Imran', 'Dhaka'),
+(4, 'Tania', 'Khulna'),
+(5, 'Fahim', 'Rajshahi');
+
+
+ describe Customers;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| c_id   | int(11)     | NO   | PRI | NULL    |       |
+| c_name | varchar(30) | YES  |     | NULL    |       |
+| city   | varchar(15) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.008 sec)
+
+ select * from customers;
++------+--------+------------+
+| c_id | c_name | city       |
++------+--------+------------+
+|    1 | Rahim  | Dhaka      |
+|    2 | Karina | Chittagong |
+|    3 | Imran  | Dhaka      |
+|    4 | Tania  | Khulna     |
+|    5 | Fahim  | Rajshahi   |
++------+--------+------------+
+
+create table products(
+    p_id int primary key,
+    p_name varchar(20),
+    price int
+    ); 
+
+<!--- ALTER table products Modify price int; --->
+
+insert into products values
+(101, 'Laptop', 80000),
+(102, 'Phone', 40000),
+(103, 'Headphone',5000),
+(104, 'Table', 30000),
+(105, 'Monitor', 20000);
+
+ describe products;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| p_id   | int(11)     | NO   | PRI | NULL    |       |
+| p_name | varchar(20) | YES  |     | NULL    |       |
+| price  | int(11)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+
+
+ select * from products;
++------+-----------+-------+
+| p_id | p_name    | price |
++------+-----------+-------+
+|  101 | Laptop    | 80000 |
+|  102 | Phone     | 40000 |
+|  103 | Headphone |  5000 |
+|  104 | Table     | 30000 |
+|  105 | Monitor   | 20000 |
++------+-----------+-------+
+
+<!--
+RENAME TABLE Customers to customers; 
+// no need, because here mysql isn't case sensitive so uppercase and lowercase doesn't matter bruh
+-->
+
+show tables;
++---------------+
+| Tables_in_oss |
++---------------+
+| Customers     |
+| products      |
++---------------+
+
+
+create table orders(
+    o_id int primary key,
+    c_id int,
+    p_id int,
+    quantity int,
+    constraint fk_pid foreign key(p_id) references products(p_id),
+    constraint fk_cid foreign key(c_id) references customers(c_id)
+);
+
+show tables;
++---------------+
+| Tables_in_oss |
++---------------+
+| Customers     |
+| orders        |
+| products      |
++---------------+
+
+describe orders;
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| o_id     | int(11) | NO   | PRI | NULL    |       |
+| c_id     | int(11) | YES  | MUL | NULL    |       |
+| p_id     | int(11) | YES  | MUL | NULL    |       |
+| quantity | int(11) | YES  |     | NULL    |       |
++----------+---------+------+-----+---------+-------+
+
+INSERT INTO orders VALUES 
+(1, 1, 101, 1),
+(2,2,102,2),
+(3,1,103,3),
+(4,3,104,1),
+(5,4,105,2),
+(6,1,102,2);
+
+SELECT * FROM orders;
++------+------+------+----------+
+| o_id | c_id | p_id | quantity |
++------+------+------+----------+
+|    1 |    1 |  101 |        1 |
+|    2 |    2 |  102 |        2 |
+|    3 |    1 |  103 |        3 |
+|    4 |    3 |  104 |        1 |
+|    5 |    4 |  105 |        2 |
+|    6 |    1 |  102 |        2 |
++------+------+------+----------+
