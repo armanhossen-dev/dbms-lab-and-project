@@ -162,6 +162,7 @@ select * from orders;
     +------+--------+------------+
 
 8.5.show customers who placed no order
+
     select * from customers where c_id NOT IN (select distinct c_id from orders);
     +------+--------+----------+
     | c_id | c_name | city     |
@@ -170,28 +171,28 @@ select * from orders;
     +------+--------+----------+
 
 
-select * from orders;
-+------+------+------+----------+
-| o_id | c_id | p_id | quantity |
-+------+------+------+----------+
-|    1 |    1 |  101 |        1 |
-|    2 |    2 |  102 |        2 |
-|    3 |    1 |  103 |        3 |
-|    4 |    3 |  104 |        1 |
-|    5 |    4 |  105 |        2 |
-|    6 |    1 |  102 |        2 |
-+------+------+------+----------+
+    select * from orders;
+    +------+------+------+----------+
+    | o_id | c_id | p_id | quantity |
+    +------+------+------+----------+
+    |    1 |    1 |  101 |        1 |
+    |    2 |    2 |  102 |        2 |
+    |    3 |    1 |  103 |        3 |
+    |    4 |    3 |  104 |        1 |
+    |    5 |    4 |  105 |        2 |
+    |    6 |    1 |  102 |        2 |
+    +------+------+------+----------+
 
- select * from customers;
-+------+--------+------------+
-| c_id | c_name | city       |
-+------+--------+------------+
-|    1 | Rahim  | Dhaka      |
-|    2 | Karina | Chittagong |
-|    3 | Imran  | Dhaka      |
-|    4 | Tania  | Khulna     |
-|    5 | Fahim  | Rajshahi   |
-+------+--------+------------+
+    select * from customers;
+    +------+--------+------------+
+    | c_id | c_name | city       |
+    +------+--------+------------+
+    |    1 | Rahim  | Dhaka      |
+    |    2 | Karina | Chittagong |
+    |    3 | Imran  | Dhaka      |
+    |    4 | Tania  | Khulna     |
+    |    5 | Fahim  | Rajshahi   |
+    +------+--------+------------+
 
 
 9. show product id and total_quantity sold only for products where total quantity is greater than 2
