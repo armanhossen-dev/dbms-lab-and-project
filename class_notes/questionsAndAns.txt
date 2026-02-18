@@ -14,7 +14,6 @@
 
 
 
-
 Ans:
 1.show all customers from Dhaka
 
