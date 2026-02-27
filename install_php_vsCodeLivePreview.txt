@@ -1,0 +1,37 @@
+setup php in vs code!
+for macOS : https://chatgpt.com/s/t_69a16e998620819188d412011af3d210
+for windows: https://chatgpt.com/s/t_69a16e59a7bc8191b3411ab9d44f0470
+
+For me!
+Install & Run PHP in VS Code on macOS
+Open Terminal: Check if PHP is Already Installed 
+php -v
+
+If you see a version number → PHP is installed ✅
+
+If you see command not found → install PHP below.
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+brew -v
+brew install php
+php -v
+which php
+/opt/homebrew/bin/php
+
+Configure PHP in VS Code
+Open VS Code → Settings → Search: php.validate.executablePath
+add this, "php.validate.executablePath": "/opt/homebrew/bin/php"
+
+Save and restart VS Code. 😂
+
+Enable Live Auto Reload  🫡
+install VS Code extension: Five Server 
+
+Create a file in your project root:  fiveserver.config.js
+inside it, add this 
+
+module.exports = {
+  php: "/opt/homebrew/bin/php"
+}
+
+Restart VS Code. DONE!!!!!!!!!
