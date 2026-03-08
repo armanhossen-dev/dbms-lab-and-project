@@ -1,0 +1,105 @@
+Name: Arman Hossen Ripon
+Id: 241-15-883
+
+1. show all departments with no employees
+
+SELECT d.department_id, d.department_name FROM departments d
+LEFT JOIN employees e 
+ON d.department_id = e.department_id
+WHERE e.employee_id IS NULL;
+
+
+
+2.display the department name and the number of employees in each department, 
+excluding the departments with no employees
+
+SELECT d.department_name, COUNT(e.employee_id) AS total_employees FROM departments d 
+JOIN employees e 
+ON d.department_id = e.department_id
+GROUP BY d.department_name;
+
+
+
+3. find the name, job titles of employees and their corresponding department names
+
+SELECT e.first_name, e.last_name, j.job_title, d.department_name FROM employees e 
+JOIN jobs j 
+oN e.job_id = j.job_id
+JOIN departments d 
+ON e.department_id = d.department_id;
+
+
+
+4. list all departments and the number of employees in each, including department wiht no employees
+
+SELECT d.department_name, COUNT(e.employee_id) AS total_employees FROM departments d 
+LEFT JOIN employees e 
+ON d.department_id = e.department_id
+GROUP BY d.department_name;
+
+
+
+5.  retrieve the name of each department and the hightest-paid employee in that department.
+
+SELECT d.department_name, e.first_name, e.last_name, e.salary FROM employees e 
+JOIN departments d
+ON e.department_id = d.department_id
+WHERE (e.department_id, e.salary) IN (
+    SELECT department_id, MAX(salary) FROM employees GROUP BY department_id
+);
+
+
+
+6. show all employees in the 'Asia' region excluding the employees in the country 'China'
+
+SELECT e.first_name, e.last_name, r.region_name, c.country_name FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+JOIN countries c ON l.country_id = c.country_id
+JOIN regions r ON c.region_id = r.region_id
+where r.region_name = 'Asia'
+AND c.country_name NOT IN ('China');
+
+
+7, show the difference between the salaries of managers and the average salary of all the non-manager 
+employees  of each department.
+
+select department_id, 
+MAX(case when job_id like '%MAN' then salary END) - AVG(case when job_id not like '%MAN' then salary END) AS salary_differnce 
+from employees GROUP BY department_id;
+
+
+
+8.  Which region has the hightest number of employees?
+
+select r.region_name, COUNT(e.employee_id) AS total_employees 
+FROM employees e 
+JOIN departments d on e.department_id = d.department_id
+join locations l on d.location_id = l.location_id
+join countries c on l.country_id = c.country_id
+join regions r on c.region_id = r.region_id
+GROUP BY r.region_name
+order by total_employees desc limit 1;
+
+
+
+9. Find the average  salary of employees in each region.
+
+SELECT r.region_name, AVG(e.salary) AS avg_salary
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+JOIN countries c ON l.country_id = c.country_id
+JOIN regions r ON c.region_id = r.region_id
+GROUP BY r.region_name;
+
+
+10. show the number of unique job_ids in each region.
+
+SELECT r.region_name, COUNT(DISTINCT e.job_id) AS unique_jobs
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+JOIN countries c ON l.country_id = c.country_id
+JOIN regions r ON c.region_id = r.region_id
+GROUP BY r.region_name;
