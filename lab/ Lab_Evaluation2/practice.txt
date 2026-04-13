@@ -1,0 +1,112 @@
+h1 question practice:
+https://claude.ai/share/a74cbf64-eeea-471e-912d-a455d6523d16
+
+mysql -u root
+show databases;
+
+create database e2;
+
+MariaDB [(none)]> use e2;
+Database changed
+MariaDB [e2]> create table customer(
+    -> cid int primary key,
+    -> name varchar(100),
+    -> email varchar(100));
+Query OK, 0 rows affected (0.019 sec)
+
+MariaDB [e2]> create table product(
+    -> pid int primary key,
+    -> pname varchar(100),
+    -> price decimal(10,2));
+Query OK, 0 rows affected (0.013 sec)
+
+//rename a table
+rename table old_table_name to new_table_name;
+
+CREATE TABLE purchase (
+    purchaseID INT PRIMARY KEY,
+    cid INT,
+    pid INT,
+    qnt INT,
+    FOREIGN KEY (cid) REFERENCES Customer(cid),
+    FOREIGN KEY (pid) REFERENCES Product(pid)
+);
+
+//alter table name rename column old_column_name to new_column_name;
+
+
+// update 
+UPDATE table_name
+SET column1 = value1, column2 = value2
+WHERE condition;
+
+//example
+UPDATE users
+SET name = 'Arman'
+WHERE id = 1;
+
+//update multiple columns
+UPDATE users
+SET name = 'Arman', age = 22
+WHERE id = 1;
+
+
+1.Task 1 — Procedure: getCustomersWithoutPurchases
+DELIMITER $$
+
+CREATE PROCEDURE getCustomersWithoutPurchases()
+BEGIN
+    SELECT Name
+    FROM Customer
+    WHERE CustomerID NOT IN (
+        SELECT DISTINCT CustomerID FROM Purchase
+    );
+END$$
+
+DELIMITER ;
+
+-- Call it:
+CALL getCustomersWithoutPurchases();
+
+
+2.Task 2 — Procedure: updatePurchaseQuantity
+
+DELIMITER $$
+
+CREATE PROCEDURE updatePurchaseQuantity(
+    IN purchaseID INT,
+    IN newQuantity INT,
+    OUT customerID INT
+)
+BEGIN
+    UPDATE Purchase
+    SET Quantity = newQuantity
+    WHERE PurchaseID = purchaseID;
+
+    SELECT CustomerID INTO customerID
+    FROM Purchase
+    WHERE PurchaseID = purchaseID;
+END$$
+
+DELIMITER ;
+
+-- Call it:
+CALL updatePurchaseQuantity(1, 5, @custID);
+SELECT @custID;
+
+3.Task 3 — Trigger: Log changes to PurchaseLog
+
+DELIMITER $$
+
+CREATE TRIGGER trg_LogQuantityChange
+AFTER UPDATE ON Purchase
+FOR EACH ROW
+BEGIN
+    IF OLD.Quantity <> NEW.Quantity THEN
+        INSERT INTO PurchaseLog (PurchaseID, OldQuantity, NewQuantity, UpdatedAt)
+        VALUES (OLD.PurchaseID, OLD.Quantity, NEW.Quantity, NOW());
+    END IF;
+END$$
+
+DELIMITER ;
+
