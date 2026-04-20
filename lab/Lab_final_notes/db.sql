@@ -12,8 +12,6 @@ create table students(
     email varchar(50) unique
 );
 
-
-
 create table courses(
     cid int primary key,
     cname varchar(50),
@@ -28,7 +26,6 @@ create table enrollment(
     foreign key (sid) references students(sid),
     foreign key (cid) references courses(cid)
 );
-
 
 CREATE TABLE Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,      -- integer, auto increment
@@ -46,10 +43,8 @@ CREATE TABLE Users (
     login_time TIME,                             -- time
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto timestamp
     
-    profile_text TEXT,                           -- long text
-    
-    profile_image BLOB,                          -- binary data (image/file)
-    
+    profile_text TEXT,                           -- long text    
+    profile_image BLOB,                          -- binary data (image/file)    
     country VARCHAR(50) DEFAULT 'Bangladesh'     -- default value
 );
 
@@ -60,17 +55,17 @@ Boolean: BOOLEAN
 Date/Time: DATE, TIME, TIMESTAMP
 Special inputs: ENUM, BLOB
 Constraints:
-PRIMARY KEY
-NOT NULL
-UNIQUE
-CHECK
-DEFAULT
+    PRIMARY KEY
+    NOT NULL
+    UNIQUE
+    CHECK
+    DEFAULT
 
 Tips
-Use VARCHAR for short text, TEXT for long content.
-Use ENUM only if values are fixed.
-Avoid BLOB unless really needed (can slow things).
-Always add constraints to keep data clean.
+    Use VARCHAR for short text, TEXT for long content.
+    Use ENUM only if values are fixed.
+    Avoid BLOB unless really needed (can slow things).
+    Always add constraints to keep data clean.
 */
 
 
@@ -116,8 +111,6 @@ join courses c on e.cid = c.cid;
 select cid, count(sid) as total_students 
 from enrollment 
 group by cid;
-
-
 
 
 select * from students;
@@ -222,8 +215,6 @@ DELIMITER ;
 
 CALL GetStudentCourses(1);
 
-
-
 --- trigger
 CREATE TABLE LogTable (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -242,18 +233,11 @@ END //
 
 DELIMITER ;
 
-
 -- transaction
 START TRANSACTION;
 
 UPDATE Students SET dept = 'BBA' WHERE student_id = 1;
-
 SAVEPOINT sp1;
-
 UPDATE Students SET dept = 'LAW' WHERE student_id = 2;
-
 ROLLBACK TO sp1;
-
 COMMIT;
-
-
