@@ -13,6 +13,7 @@ create table students(
 );
 
 
+
 create table courses(
     cid int primary key,
     cname varchar(50),
@@ -28,7 +29,58 @@ create table enrollment(
     foreign key (cid) references courses(cid)
 );
 
+
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,      -- integer, auto increment
+    username VARCHAR(50) NOT NULL,               -- text (required)
+    email VARCHAR(100) UNIQUE,                   -- unique value
+    password VARCHAR(255) NOT NULL,              -- text (required)
+    
+    age INT CHECK (age >= 0),                    -- integer with condition
+    salary DECIMAL(10,2),                        -- decimal numbers
+    
+    is_active BOOLEAN DEFAULT TRUE,              -- true/false
+    gender ENUM('Male', 'Female', 'Other'),      -- fixed choices
+    
+    birth_date DATE,                             -- date
+    login_time TIME,                             -- time
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto timestamp
+    
+    profile_text TEXT,                           -- long text
+    
+    profile_image BLOB,                          -- binary data (image/file)
+    
+    country VARCHAR(50) DEFAULT 'Bangladesh'     -- default value
+);
+
+/*
+Numbers: INT, DECIMAL
+Text: VARCHAR, TEXT
+Boolean: BOOLEAN
+Date/Time: DATE, TIME, TIMESTAMP
+Special inputs: ENUM, BLOB
+Constraints:
+PRIMARY KEY
+NOT NULL
+UNIQUE
+CHECK
+DEFAULT
+
+Tips
+Use VARCHAR for short text, TEXT for long content.
+Use ENUM only if values are fixed.
+Avoid BLOB unless really needed (can slow things).
+Always add constraints to keep data clean.
+*/
+
+
 -- INSERT DATA
+
+INSERT INTO Users 
+(username, email, password, age, salary, is_active, gender, birth_date, login_time, profile_text)
+VALUES 
+('arman123', 'arman@email.com', 'pass123', 22, 15000.50, TRUE, 'Male', '2002-05-10', '14:30:00', 'Hello world!');
+
 
 INSERT INTO students VALUES
 (1, 'Arman', 'CSE', 'ooh@gmail.com'),
