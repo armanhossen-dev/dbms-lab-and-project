@@ -1,0 +1,10 @@
+This single example:
+    Table creation (DDL)
+    Insert/update/delete (DML)
+    Queries (DQL)
+    Constraints (PK, FK)
+    Joins, grouping
+    Views
+    Stored procedures
+    Triggers
+    Transactions
