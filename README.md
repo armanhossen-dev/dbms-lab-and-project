@@ -15,8 +15,7 @@
 Open **XAMPP Control Panel** and start:
  MySQL, Apache (optional)
 
-| Open **XAMPP Control Panel** and start:|
-|---|
+# Open **XAMPP Control Panel** and start:|
 | Service 1 | Service 2 |
 | :--- | :--- |
 | MySQL | Apache (optional) |
