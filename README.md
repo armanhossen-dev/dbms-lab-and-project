@@ -16,7 +16,7 @@ Open **XAMPP Control Panel** and start:
  MySQL, Apache (optional)
 
 | Open **XAMPP Control Panel** and start:|
-|------|-----|
+|---|---|
 | MySQL | Apache (optional)  |
 
 ---
