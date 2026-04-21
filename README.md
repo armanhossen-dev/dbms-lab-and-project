@@ -1,8 +1,7 @@
 # DBMS Lab Notes & Project — Spring 2026 (DIU)
 
 
-
-# XAMPP (macOS) – MySQL Update / Maintenance Guide
+Notes: **XAMPP** (macOS) – MySQL Update / Maintenance Guide
 
 ## ⚠️ Important Concept
 - 🟢 **XAMPP ON** → Used for SQL login and queries
