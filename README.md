@@ -10,30 +10,30 @@ Notes: **XAMPP** (macOS) – MySQL Update / Maintenance Guide
 ---
 
 # 1: Start XAMPP (Required for SQL commands)
->>> Open **XAMPP Control Panel** and start:
+Open **XAMPP Control Panel** and start:
 | MySQL | Apache (optional) |
 | :--- | :--- |
 
 ## Paste the sql commands following the comments.
->>> Login to MySQL
+Login to MySQL
 ```sql
 /Applications/XAMPP/xamppfiles/bin/mysql -u root
 ```
 
->>> Reset / Update Root User
+Reset / Update Root User
 ```sql
 -- Inside MySQL shell:
 FLUSH PRIVILEGES;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '';
 ```
->>> Wait for finish
+Wait for finish
 ```sql
 -- Exit MySQL
 exit;
 ```
 
 # 2: Stop XAMPP (Required for upgrade)
->>> Make Sure!
+Make Sure!
 | MySQL is stopped | Apache is stopped  (recommended)|
 | :--- | :--- |
 ```sql
