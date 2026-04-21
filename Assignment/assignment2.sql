@@ -89,12 +89,12 @@ insert into Teaches values
 (5, 105, 'Spring2023');
 
 
-📘 Tasks
-1. SQL JOINs 
-Write a query to list all students along with 
-the courses they are enrolled in and the names 
-of the instructors teaching those courses during 
-the Spring2024 semester.
+-- 📘 Tasks
+-- 1. SQL JOINs 
+-- Write a query to list all students along with 
+-- the courses they are enrolled in and the names 
+-- of the instructors teaching those courses during 
+-- the Spring2024 semester.
 
 select s.Name as StudentName, c.CourseName, i.Name as InstructorName
 from Student s 
@@ -105,10 +105,9 @@ join Instructor i on t.InstructorID = i.InstructorID
 where t.Semester = 'spring2024';
 
 
-
-2. Aggregation with Condition
-Write a query to calculate the average grade for each course, 
-considering only students who enrolled after 2020.
+-- 2. Aggregation with Condition
+-- Write a query to calculate the average grade for each course, 
+-- considering only students who enrolled after 2020.
 
 select c.CourseName, AVG(e.Grade) AS AverageGrade
 from Enrollment e
@@ -118,21 +117,87 @@ where s.EnrollmentYear > 2020
 group by c.CourseName;
 
 
-3. User-Defined Function 
-Create a MySQL function called calculateGPA(student_id INT) 
-that returns the average GPA of the student with the given 
-ID, using the Enrollment table.
+-- 3. User-Defined Function 
+-- Create a MySQL function called calculateGPA(student_id INT) 
+-- that returns the average GPA of the student with the given 
+-- ID, using the Enrollment table.
+
+DELIMITER $$
+
+CREATE FUNCTION calculateGPA(student_id INT)
+RETURNS FLOAT
+DETERMINISTIC
+BEGIN
+    DECLARE gpa FLOAT;
+
+    SELECT AVG(Grade)
+    INTO gpa
+    FROM Enrollment
+    WHERE StudentID = student_id;
+
+    RETURN gpa;
+END$$
+DELIMITER ;
 
 
+-- 4. Conditional Output 
+-- Using the function created in Task 3, write a query that displays each student’s name along with their performance category:
+-- 'Excellent' for GPA > 3.5
+-- 'Good' for GPA between 3.0 and 3.5
+-- 'Average' for GPA between 2.0 and 3.0
+-- 'Poor' for GPA < 2.0
+-- Use the CASE WHEN statement to define the categories.
 
 
+select Name, calculateGPA(StudentID) as GPA,
+    case 
+        when calculateGPA(StudentID) > 3.5 then 'Excellent'
+        when calculateGPA(StudentID) between 3.0 and 3.5 then 'Good'
+        when calculateGPA(StudentID) between 2.0 and 3.0 then 'Average'
+        else 'Poor'
+    end as performance
+from student;
 
 
-Note:
-https://docs.google.com/document/d/1zwza6srRCclK0TbzOQASO4iD6ib_i785OC_SQmUg8nE/edit?tab=t.0
+-- 5. Stored Procedure with Loop 
+-- Create a stored procedure that accepts a department name as input. The procedure should loop through 
+-- all students in that department and display their name and GPA (using the function from Task 3). 
+-- Use DECLARE, CURSOR, and LOOP constructs in your procedure.
 
-Assignment:
-https://elearn.daffodilvarsity.edu.bd/mod/assign/view.php?id=2129449
 
-Presentation:
-https://elearn.daffodilvarsity.edu.bd/mod/assign/view.php?id=2129448
+delimiter $$
+create procedure StudentGPAByDepartment(in dept_name varchar(100))
+begin 
+    declare done int  default FALSE;
+    declare s_id int;
+    declare s_name varchar(100);
+    declare cur CURSOR for
+        select StudentID, Name from Student 
+        where Department = dept_name;
+    declare continue handler for not found set done = TRUE;
+    open cur;
+    read_loop: LOOP
+        FETCH cur into s_id, s_name;
+        if done then
+            leave read_loop;
+        end if;    
+
+    select s_name as StudentName, calculateGPA(s_id) as GPA;
+
+    End loop;
+    close cur;
+end$$
+delimiter ;
+
+CALL StudentGPAByDepartment('CSE');
+
+
+-- Bonus Task (Optional )
+-- Write a query to identify students who have never enrolled in any course.
+
+select Name From Student
+where StudentID NOT IN(
+    select distinct StudentID from Enrollment);
+
+-- Presentation:
+-- https://elearn.daffodilvarsity.edu.bd/mod/assign/view.php?id=2129448
