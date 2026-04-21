@@ -17,11 +17,13 @@ Open **XAMPP Control Panel** and start:
 
 | Open **XAMPP Control Panel** and start:|
 |---|
-| MySQL | Apache (optional)  |
+| Service 1 | Service 2 |
+| :--- | :--- |
+| MySQL | Apache (optional) |
 
 ---
 
-## sql commands follow the comments and past the sql
+## Paste the sql commands following the comments.
 
 ```sql
 -- 💻 Login to MySQL
