@@ -16,52 +16,54 @@ Open **XAMPP Control Panel** and start:
  MySQL, Apache (optional)
 
 | Open **XAMPP Control Panel** and start:|
-|---|---|
+|---|
 | MySQL | Apache (optional)  |
 
 ---
 
+## sql commands follow the comments and past the sql
 
 ```sql
 -- 💻 Login to MySQL
 /Applications/XAMPP/xamppfiles/bin/mysql -u root
 
--- # Reset / Update Root User
+```
+
+# Reset / Update Root User
+```sql
 -- Inside MySQL shell:
 FLUSH PRIVILEGES;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '';
-
--- Exit MySQL
-exit;
-
 ```
 
-🔴 Step 2: Stop XAMPP (Required for upgrade)
-Stop services using:
+## wait for finish
 
-XAMPP Control Panel OR
-Terminal
+```sql
+-- Exit MySQL
+exit;
+```
 
+# 🔴 Step 2: Stop XAMPP (Required for upgrade)
 
+|Make sure:|
+|---|
+| MySQL is stopped | Apache is stopped  (recommended)|
+
+```sql
 sudo /Applications/XAMPP/xamppfiles/xampp stop
+```
 
-Make sure:
 
-❌ MySQL is stopped
-❌ Apache is stopped (recommended)
-
-⚙️ Step 3: Run MySQL Upgrade
-in terminal 
-```bash
+# ⚙️ Step 3: Run MySQL Upgrade
+```sql
 cd /Applications/XAMPP/xamppfiles/bin
 ./mysql_upgrade -u root
 ```
 
-🔁 Step 4: Restart XAMPP
+# 🔁 Step 4: Restart XAMPP
 
-After upgrade is complete:
-
-Open XAMPP Control Panel
-Start:
-MySQL
-Apache (if needed)
+- After upgrade is complete:
+- Open XAMPP Control Panel
+- Start:
+  - MySQL
+  - Apache (if needed)
