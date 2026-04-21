@@ -19,14 +19,11 @@ Open **XAMPP Control Panel** and start:
 | :--- | :--- |
 | MySQL | Apache (optional) |
 
----
-
 ## Paste the sql commands following the comments.
 
 ```sql
 -- 💻 Login to MySQL
 /Applications/XAMPP/xamppfiles/bin/mysql -u root
-
 ```
 
 # Reset / Update Root User
@@ -46,13 +43,12 @@ exit;
 # 🔴 Step 2: Stop XAMPP (Required for upgrade)
 
 |Make sure:|
-|---|
+|---|---|
 | MySQL is stopped | Apache is stopped  (recommended)|
 
 ```sql
 sudo /Applications/XAMPP/xamppfiles/xampp stop
 ```
-
 
 # ⚙️ Step 3: Run MySQL Upgrade
 ```sql
