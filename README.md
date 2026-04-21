@@ -41,8 +41,7 @@ exit;
 ```
 
 # 🔴 Step 2: Stop XAMPP (Required for upgrade)
-
-|Make sure |
+Make Sure!
 |:---|:---|
 | MySQL is stopped | Apache is stopped  (recommended)|
 
