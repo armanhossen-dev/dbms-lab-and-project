@@ -1,46 +1,41 @@
 # DBMS Lab Notes & Project — Spring 2026 (DIU)
 
 
-Notes: **XAMPP** (macOS) – MySQL Update / Maintenance Guide
 
-## ⚠️ Important Concept
+Notes: **XAMPP** (macOS) – MySQL Update / Maintenance Guide
+### ⚠️ Important Concept
 - 🟢 **XAMPP ON** → Used for SQL login and queries
 - 🔴 **XAMPP OFF** → Used for upgrades and maintenance tools
 
 ---
 
 # 1: Start XAMPP (Required for SQL commands)
-
-## Open **XAMPP Control Panel** and start:
-
+>>> Open **XAMPP Control Panel** and start:
 | MySQL | Apache (optional) |
 | :--- | :--- |
 
----
-
-### Paste the sql commands following the comments.
+## Paste the sql commands following the comments.
+>>> Login to MySQL
 ```sql
--- Login to MySQL
 /Applications/XAMPP/xamppfiles/bin/mysql -u root
 ```
 
-### Reset / Update Root User
+>>> Reset / Update Root User
 ```sql
 -- Inside MySQL shell:
 FLUSH PRIVILEGES;
 ALTER USER 'root'@'localhost' IDENTIFIED BY '';
 ```
-
-### wait for finish
+>>> Wait for finish
 ```sql
 -- Exit MySQL
 exit;
 ```
 
 # 2: Stop XAMPP (Required for upgrade)
-## Make Sure!
+>>> Make Sure!
 | MySQL is stopped | Apache is stopped  (recommended)|
-
+| :--- | :--- |
 ```sql
 sudo /Applications/XAMPP/xamppfiles/xampp stop
 ```
