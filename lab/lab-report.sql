@@ -86,8 +86,6 @@ DELETE FROM BankAccounts WHERE account_id = 102;
 
 
 
-
-
 -- 1. Create Database
 CREATE DATABASE bank_system_db;
 
@@ -191,8 +189,6 @@ VALUES (102, 'Karim', 'Current');
 
 
 
-
-
 -- Multiple Row Insert
 INSERT INTO BankAccounts (acc_id, acc_name, account_type, balance, opening_date)
 VALUES
@@ -234,10 +230,6 @@ SET balance = balance + 2000
 WHERE balance < 40000;
 
 
-
-
-
-
 -- 1. Delete Specific Row (Closing a specific bank account)
 DELETE FROM BankAccounts WHERE acc_id = 103;
 -- 2. Delete with Condition (Removing accounts with a balance below 35,000)
@@ -269,10 +261,6 @@ INSERT INTO BankAccounts VALUES (1001, 'Savings', 1);
 INSERT INTO BankAccounts VALUES (1002, 'Current', 99);
 
 
-
-
-
-
 ---Step 7: Aggregate Functions
 -- Count total number of bank customers
 SELECT COUNT(*) FROM BankCustomers;
@@ -298,8 +286,6 @@ SELECT account_type, COUNT(acc_id)
 FROM BankAccounts
 GROUP BY account_type 
 HAVING COUNT(acc_id) > 1;
-
-
 
 
 --Step 9: JOIN Operations
@@ -370,9 +356,6 @@ CALL GetCustomerNameByAcc(101, @customer_name);
 -- View the result
 SELECT @customer_name AS 'Account Holder';
 
-
-
-
 --Implementation of Database Transactions and Savepoints
 
 -- Parent Table: Branches (Equivalent to Doctors)
@@ -390,14 +373,6 @@ CREATE TABLE Customers (
     phone VARCHAR(20),
     account_type VARCHAR(20)
 ) ENGINE=InnoDB;
-
-
-
-
-
-
-
-
 
 
 -- Step 1: Create Tables
@@ -511,101 +486,3 @@ ROLLBACK TO after_loans;
 COMMIT;
 
 SHOW TABLES;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- 2. Data Entry (DML)
--- Insert Customers
-INSERT INTO Customers (customer_id, name, phone, email, city) VALUES 
-(1, 'MD. Wahidur Rahman', '01700000000', 'wahid@example.com', 'Dhaka'),
-(2, 'Saief Ahmed', '01800000000', 'saief@example.com', 'Chittagong'),
-(3, 'Hakim Khan', '01900000000', 'hakim@example.com', 'Sylhet');
-
--- Insert Accounts
-INSERT INTO Accounts VALUES 
-(1001, 1, 'Savings', 50000.00, '2023-01-10'),
-(1002, 2, 'Current', 25000.00, '2023-02-15'),
-(1003, 3, 'Savings', 10000.00, '2023-03-20');
-
-
--- 3. Advanced Operations (Transactions & Views)
-START TRANSACTION;
-
--- Step 1: Withdraw from Account 1001
-UPDATE Accounts SET balance = balance - 5000 WHERE account_id = 1001;
-INSERT INTO Transactions (tran_id, account_id, tran_type, amount) VALUES (501, 1001, 'Withdrawal', 5000);
-
-SAVEPOINT after_withdrawal;
-
--- Step 2: Try to Deposit to Account 1002
-UPDATE Accounts SET balance = balance + 5000 WHERE account_id = 1002;
-INSERT INTO Transactions (tran_id, account_id, tran_type, amount) VALUES (502, 1002, 'Deposit', 5000);
-
--- If an error occurs here, use: ROLLBACK TO after_withdrawal;
-COMMIT;
-
--- Banking Analytics Views
--- View: Customer Account Summary
-CREATE VIEW view_customer_balances AS
-SELECT c.name, a.account_type, a.balance, c.city
-FROM Customers c
-JOIN Accounts a ON c.customer_id = a.customer_id;
-
--- View: High Value Transactions
-CREATE VIEW view_large_transactions AS
-SELECT t.tran_id, a.account_id, t.tran_type, t.amount, t.tran_date
-FROM Transactions t
-JOIN Accounts a ON t.account_id = a.account_id
-WHERE t.amount > 10000;
-
