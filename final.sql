@@ -318,3 +318,5 @@ inner join emp b on a.managerID = b.emp_id;
 -- | David    | Alice        |
 -- | Emma     | Bob          |
 -- +----------+--------------+
+
+-- sql count, sum, avg, like, wildcards, in , between, min, max, not, or , and , order by, select distinct, select
